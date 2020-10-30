@@ -4,6 +4,7 @@ import pygame
 
 from .paddle import Paddle
 from .ball import Ball
+from .block import Block
 
 
 class World(object):
@@ -24,6 +25,9 @@ class World(object):
     def add_ball(self, ball):
         self.balls.append(ball.create(world=self))
 
+    def add_blocks(self, block):
+        self.blocks = [block.create(col=i, row=j) for i in range(10) for j in range(4)]
+
     def move_balls(self):
         for ball in self.balls:
             ball.move()
@@ -37,3 +41,7 @@ class World(object):
         # draw balls
         for ball in self.balls:
             ball.draw(surface=self.surface)
+
+        # draw blocks
+        for block in self.blocks:
+            block.draw(surface=self.surface)
