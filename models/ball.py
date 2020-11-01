@@ -4,10 +4,10 @@ import pygame
 
 
 class Ball(object):
-    def __init__(self, radius: int = 20, speed: int = 6, color: str = 'white'):
+    def __init__(self, radius: int = 10, speed: int = 6, **kwargs):
         self.radius = radius
         self.speed = speed
-        self.color = pygame.Color(color)
+        self.color = kwargs.get('color') or pygame.Color('white')
 
         self.instance = None
 

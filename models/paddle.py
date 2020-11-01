@@ -2,30 +2,43 @@ import pygame
 
 
 class Paddle(object):
-    def __init__(self, width: int = 330, height: int = 35, speed: int = 15, color: str = 'darkorange'):
+    instance = None
+
+    def __init__(self, width: int = 250, height: int = 15, **kwargs):
         self.width = width
         self.height = height
-        self.speed = speed
 
-        self.instance = None
-        self.color = pygame.Color(color)
+        self.speed = kwargs.get('speed') or 15
+        self.color = kwargs.get('color') or pygame.Color('darkorange')
+        self.max_left = kwargs.get('max_left') or 0
+        self.max_right = kwargs.get('max_right') or float('inf')
 
     @classmethod
     def create(cls, world, *args, **kwargs):
-        paddle = cls(*args, **kwargs)
+        paddle = cls(
+            *args,
+            **kwargs,
+            max_right=world.width,
+            height=world.height // 60,
+            width=world.width // 7,
+        )
+
         paddle.instance = pygame.Rect(
             world.width // 2 - paddle.width // 2,
             world.height - paddle.height - 10,
             paddle.width,
             paddle.height,
         )
+
         return paddle
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.instance)
 
     def move_left(self):
-        self.instance.left -= self.speed
+        if self.instance.left > self.max_left:
+            self.instance.left -= self.speed
 
     def move_right(self):
-        self.instance.right += self.speed
+        if self.instance.right < self.max_right:
+            self.instance.right += self.speed
