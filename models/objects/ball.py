@@ -2,10 +2,8 @@ from random import randrange
 
 import pygame
 
-from models.abc.abc_objects import VisibleObject, MovableObject
 
-
-class Ball(VisibleObject, MovableObject):
+class Ball(object):
     def __init__(self, radius: int = 10, speed: int = 6, **kwargs):
         self.radius = radius
         self.speed = speed

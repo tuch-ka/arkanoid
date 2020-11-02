@@ -1,9 +1,7 @@
 import pygame
 
-from models.abc.abc_objects import VisibleObject
 
-
-class Paddle(VisibleObject):
+class Paddle(object):
     instance = None
 
     def __init__(self, width: int = 250, height: int = 15, **kwargs):

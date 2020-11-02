@@ -1,9 +1,4 @@
-from typing import List
-
 import pygame
-
-from handlers import PaddleHandler, BallHandler, BlockHandler
-from models.abc.abc_objects import VisibleObject
 
 
 class Surface(object):
