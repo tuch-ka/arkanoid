@@ -1,7 +1,9 @@
 import pygame
 
+from models.abc.abc_objects import VisibleObject
 
-class Paddle(object):
+
+class Paddle(VisibleObject):
     instance = None
 
     def __init__(self, width: int = 250, height: int = 15, **kwargs):
@@ -14,9 +16,8 @@ class Paddle(object):
         self.max_right = kwargs.get('max_right') or float('inf')
 
     @classmethod
-    def create(cls, world, *args, **kwargs):
+    def create(cls, world, **kwargs):
         paddle = cls(
-            *args,
             **kwargs,
             max_right=world.width,
             height=world.height // 60,

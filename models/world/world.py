@@ -47,8 +47,7 @@ class World(object):
         self.surface.draw_background()
 
         self.surface.draw_item(self.paddle)
-        self.surface.draw_items(self.balls)
-        self.surface.draw_items(self.blocks)
+        self.surface.draw_items(self.balls + self.blocks)
 
         self.wait()
 

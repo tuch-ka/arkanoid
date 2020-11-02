@@ -2,8 +2,10 @@ from random import randrange
 
 import pygame
 
+from models.abc.abc_objects import VisibleObject
 
-class Block(object):
+
+class Block(VisibleObject):
     def __init__(self, col: int, row: int, world_width: int, world_height: int, **kwargs):
         offset = kwargs.get('offset') or 10
         distance = kwargs.get('distance') or 20

@@ -1,4 +1,8 @@
+from typing import List
+
 import pygame
+
+from models.abc.abc_objects import VisibleObject
 
 
 class Surface(object):
@@ -20,9 +24,9 @@ class Surface(object):
         else:
             self.instance.fill(self.color)
 
-    def draw_item(self, item):
+    def draw_item(self, item: VisibleObject) -> None:
         item.draw(surface=self.instance)
 
-    def draw_items(self, items):
+    def draw_items(self, items: List[VisibleObject]):
         for item in items:
             item.draw(surface=self.instance)
