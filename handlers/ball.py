@@ -28,5 +28,9 @@ class BallHandler(object):
         for ball in self.balls:
             index = ball.instance.collidelist([block.instance for block in blocks])
             if index != -1:
-                block = blocks.pop(index)
+                block = blocks[index]
                 ball.collision(rect=block.instance)
+
+                hp = block.hit()
+                if not hp:
+                    blocks.pop(index)
