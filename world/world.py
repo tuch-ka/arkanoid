@@ -70,9 +70,9 @@ class World(object):
     def draw_objects(self):
         self.surface.draw_background()
 
-        self.surface.draw_paddle()
-        self.surface.draw_balls()
-        self.surface.draw_blocks()
+        self.surface.draw(handler=PaddleHandler)
+        self.surface.draw(handler=BallHandler)
+        self.surface.draw(handler=BlockHandler)
 
         pygame.display.flip()
         self.clock.tick(self.fps)

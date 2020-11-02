@@ -25,11 +25,5 @@ class Surface(object):
         else:
             self.instance.fill(self.color)
 
-    def draw_paddle(self):
-        PaddleHandler.draw(surface=self.instance)
-
-    def draw_balls(self):
-        BallHandler.draw(surface=self.instance)
-
-    def draw_blocks(self):
-        BlockHandler.draw(surface=self.instance)
+    def draw(self, handler):
+        handler.draw(surface=self.instance)
