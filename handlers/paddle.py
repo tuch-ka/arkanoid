@@ -1,18 +1,18 @@
 class PaddleHandler(object):
     paddle = None
 
-    @classmethod
-    def register(cls, paddle):
-        cls.paddle = paddle
+    def register(self, paddle):
+        self.paddle = paddle
 
-    @classmethod
-    def draw(cls, surface):
-        cls.paddle.draw(surface=surface)
+    def draw(self, surface):
+        self.paddle.draw(surface=surface)
 
-    @classmethod
-    def move_left(cls):
-        cls.paddle.move_left()
+    def move_left(self):
+        self.paddle.move_left()
 
-    @classmethod
-    def move_right(cls):
-        cls.paddle.move_right()
+    def move_right(self):
+        self.paddle.move_right()
+
+    @property
+    def instance(self):
+        return self.paddle.instance

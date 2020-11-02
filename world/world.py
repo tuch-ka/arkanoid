@@ -8,6 +8,9 @@ from models.objects import *
 class World(object):
     def __init__(self, width: int = 800, height: int = 600, **kwargs):
         pygame.init()
+        self.paddle_handler = PaddleHandler()
+        self.ball_handler = BallHandler()
+        self.block_handler = BlockHandler()
 
         self.width = width
         self.height = height
@@ -32,47 +35,48 @@ class World(object):
             if event.type == pygame.QUIT:
                 exit()
 
-    @staticmethod
-    def key_handler():
+    def key_handler(self):
         key = pygame.key.get_pressed()
 
         if key[pygame.K_LEFT]:
-            PaddleHandler.move_left()
+            self.paddle_handler.move_left()
+
         if key[pygame.K_RIGHT]:
-            PaddleHandler.move_right()
+            self.paddle_handler.move_right()
 
     def collision_handler(self):
-        BallHandler.world_collision(world=self)
-        BallHandler.paddle_collision(PaddleHandler.paddle.instance)
+        self.ball_handler.world_collision(world=self)
+        self.ball_handler.paddle_collision(self.paddle_handler.instance)
 
     def add_paddle(self, **kwargs):
         new_paddle = Paddle.create(world=self, **kwargs)
-        PaddleHandler.register(new_paddle)
+        self.paddle_handler.register(new_paddle)
 
     def add_ball(self):
-        BallHandler.register(Ball.create(world=self))
+        new_ball = Ball.create(world=self)
+        self.ball_handler.register(new_ball)
 
     def clear_balls(self):
-        BallHandler.clear()
+        self.ball_handler.clear()
 
     def add_blocks(self, columns: int = 10, rows: int = 4):
         for col in range(columns):
             for row in range(rows):
                 new_block = Block.create(world=self, col=col, row=row)
-                BlockHandler.register(new_block)
+                self.block_handler.register(new_block)
 
     def clear_blocks(self):
-        BlockHandler.clear()
+        self.block_handler.clear()
 
     def move_balls(self):
-        BallHandler.move()
+        self.ball_handler.move()
 
     def draw_objects(self):
         self.surface.draw_background()
 
-        self.surface.draw(handler=PaddleHandler)
-        self.surface.draw(handler=BallHandler)
-        self.surface.draw(handler=BlockHandler)
+        self.surface.draw(handler=self.paddle_handler)
+        self.surface.draw(handler=self.ball_handler)
+        self.surface.draw(handler=self.block_handler)
 
         pygame.display.flip()
         self.clock.tick(self.fps)
@@ -87,6 +91,6 @@ class World(object):
 
     @property
     def done(self) -> bool:
-        if BlockHandler.blocks:
+        if self.block_handler.blocks:
             return False
         return True

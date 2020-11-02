@@ -1,15 +1,12 @@
 class BlockHandler(object):
     blocks = []
 
-    @classmethod
-    def register(cls, block):
-        cls.blocks.append(block)
+    def register(self, block):
+        self.blocks.append(block)
 
-    @classmethod
-    def clear(cls):
-        cls.blocks = []
+    def clear(self):
+        self.blocks = []
 
-    @classmethod
-    def draw(cls, surface):
-        for block in cls.blocks:
+    def draw(self, surface):
+        for block in self.blocks:
             block.draw(surface=surface)
