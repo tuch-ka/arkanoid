@@ -1,6 +1,6 @@
 import pygame
 
-from models.world.surface import Surface
+from world.surface import Surface
 from models.objects import *
 
 

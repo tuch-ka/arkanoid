@@ -1,4 +1,4 @@
-from models.world import World
+from world import World
 
 
 def main_loop():
