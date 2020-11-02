@@ -25,6 +25,8 @@ class Ball(VisibleObject, MovableObject):
             self.dx = -self.dx
         if self.instance.centery < self.radius:
             self.dy = -self.dy
+        if self.instance.bottom > world.height:
+            exit()
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.instance.center, self.radius)
