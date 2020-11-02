@@ -5,14 +5,14 @@ from models.world import World
 
 def main_loop():
     pygame.init()
-
     world = World()
-    world.init()
 
-    world.add_ball()
-    world.add_blocks()
+    world.init(level=1)
 
     while True:
+        if not world.blocks:
+            break
+
         # event handler
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

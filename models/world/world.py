@@ -51,13 +51,17 @@ class World(object):
 
         self.wait()
 
-    def init(self):
+    def init(self, level: int = 1) -> None:
         if self.paddle is None:
             self.add_paddle()
         if self.balls:
             self.clear_balls()
         if self.blocks:
             self.clear_blocks()
+
+        if level == 1:
+            self.add_ball()
+            self.add_blocks()
 
     def wait(self):
         pygame.display.flip()
