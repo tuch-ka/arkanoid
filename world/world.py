@@ -2,7 +2,7 @@ import pygame
 
 from handlers import PaddleHandler, BallHandler, BlockHandler
 from world.surface import Surface
-from models.objects import *
+from objects import Paddle, Ball, Block
 
 
 class World(object):
