@@ -31,8 +31,6 @@ def main_loop():
         if key[pygame.K_RIGHT]:
             world.paddle.move_right()
 
-        world.wait()
-
 
 if __name__ == '__main__':
     main_loop()

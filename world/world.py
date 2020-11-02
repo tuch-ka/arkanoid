@@ -1,24 +1,22 @@
 import pygame
 
 from models import *
+from .surface import Surface
 
 
 class World(object):
-    def __init__(self, width: int = 800, height: int = 600, fps: int = 60):
+    def __init__(self, width: int = 800, height: int = 600, **kwargs):
         self.width = width
         self.height = height
 
-        self.fps = fps
-        self.clock = pygame.time.Clock()
+        self.fps = kwargs.get('fps') or 60
 
-        self.surface = pygame.display.set_mode((self.width, self.height))
+        self.clock = pygame.time.Clock()
+        self.surface = Surface(width=self.width, height=self.height)
+
         self.paddle = None
-        self.paddle_color = None
         self.balls = []
         self.blocks = []
-
-        # background image
-        # self.img = pygame.image.load('1.jpg').convert()
 
     def add_paddle(self, **kwargs):
         self.paddle = Paddle.create(world=self, **kwargs)
@@ -46,20 +44,13 @@ class World(object):
             ball.collision_paddle(paddle=self.paddle.instance)
 
     def draw_objects(self):
-        # draw background image
-        # self.surface.blit(self.img, (0, 0))
-        self.surface.fill('black')
+        self.surface.draw_background()
 
-        # draw paddle
-        self.paddle.draw(surface=self.surface)
+        self.surface.draw_item(self.paddle)
+        self.surface.draw_items(self.balls)
+        self.surface.draw_items(self.blocks)
 
-        # draw balls
-        for ball in self.balls:
-            ball.draw(surface=self.surface)
-
-        # draw blocks
-        for block in self.blocks:
-            block.draw(surface=self.surface)
+        self.wait()
 
     def init(self):
         if self.paddle is None:
