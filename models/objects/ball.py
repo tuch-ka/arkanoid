@@ -28,6 +28,23 @@ class Ball(VisibleObject, MovableObject):
         if self.instance.bottom > world.height:
             exit()
 
+    def collision(self, rect):
+        if self.dx > 0:
+            delta_x = self.instance.right - rect.instance.left
+        else:
+            delta_x = rect.instance.right - self.instance.left
+        if self.dy > 0:
+            delta_y = self.instance.bottom - rect.instance.top
+        else:
+            delta_y = rect.instance.bottom - self.instance.top
+
+        if abs(delta_x - delta_y) < 10:
+            self.dx, self.dy = -self.dx, -self.dy
+        elif delta_x > delta_y:
+            self.dy = -self.dy
+        elif delta_y > delta_x:
+            self.dx = -self.dx
+
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.instance.center, self.radius)
 
