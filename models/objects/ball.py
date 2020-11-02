@@ -38,7 +38,7 @@ class Ball(VisibleObject, MovableObject):
         else:
             delta_y = rect.instance.bottom - self.instance.top
 
-        if abs(delta_x - delta_y) < 10:
+        if abs(delta_x - delta_y) < self.radius // 5:
             self.dx, self.dy = -self.dx, -self.dy
         elif delta_x > delta_y:
             self.dy = -self.dy
