@@ -1,6 +1,6 @@
 import pygame
 
-from handlers import PaddleHandler
+from handlers import PaddleHandler, BallHandler
 from world.surface import Surface
 from models.objects import *
 
@@ -12,14 +12,12 @@ class World(object):
         self.width = width
         self.height = height
 
-        self.add_paddle()
-
         self.fps = kwargs.get('fps') or 60
 
         self.clock = pygame.time.Clock()
         self.surface = Surface(width=self.width, height=self.height)
 
-        self.balls = []
+        self.add_paddle()
         self.blocks = []
 
     @staticmethod
@@ -37,15 +35,19 @@ class World(object):
         if key[pygame.K_RIGHT]:
             PaddleHandler.move_right()
 
+    def collision_handler(self):
+        BallHandler.world_collision(world=self)
+        BallHandler.paddle_collision(PaddleHandler.paddle.instance)
+
     def add_paddle(self, **kwargs):
         new_paddle = Paddle.create(world=self, **kwargs)
-        PaddleHandler.register_paddle(new_paddle)
+        PaddleHandler.register(new_paddle)
 
     def add_ball(self):
-        self.balls.append(Ball.create(world=self))
+        BallHandler.register(Ball.create(world=self))
 
     def clear_balls(self):
-        self.balls = []
+        BallHandler.clear()
 
     def add_blocks(self, columns: int = 10, rows: int = 4):
         self.blocks = [
@@ -58,25 +60,21 @@ class World(object):
         self.blocks = []
 
     def move_balls(self):
-        for ball in self.balls:
-            ball.move()
-            ball.collision_world(world=self)
-            ball.collision_paddle(paddle=PaddleHandler.paddle.instance)
+        BallHandler.move()
 
     def draw_objects(self):
         self.surface.draw_background()
 
         self.surface.draw_paddle()
-        self.surface.draw_items(self.balls + self.blocks)
+        self.surface.draw_balls()
+        self.surface.draw_items(self.blocks)
 
         pygame.display.flip()
         self.clock.tick(self.fps)
 
     def init(self, level: int = 1) -> None:
-        if self.balls:
-            self.clear_balls()
-        if self.blocks:
-            self.clear_blocks()
+        self.clear_balls()
+        self.clear_blocks()
 
         if level == 1:
             self.add_ball()

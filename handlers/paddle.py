@@ -2,7 +2,7 @@ class PaddleHandler(object):
     paddle = None
 
     @classmethod
-    def register_paddle(cls, paddle):
+    def register(cls, paddle):
         cls.paddle = paddle
 
     @classmethod

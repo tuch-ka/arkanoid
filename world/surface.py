@@ -2,7 +2,7 @@ from typing import List
 
 import pygame
 
-from handlers import PaddleHandler
+from handlers import PaddleHandler, BallHandler
 from models.abc.abc_objects import VisibleObject
 
 
@@ -27,6 +27,9 @@ class Surface(object):
 
     def draw_paddle(self):
         PaddleHandler.draw(surface=self.instance)
+
+    def draw_balls(self):
+        BallHandler.draw(surface=self.instance)
 
     def draw_items(self, items: List[VisibleObject]):
         for item in items:

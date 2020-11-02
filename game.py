@@ -12,6 +12,7 @@ def main_loop():
 
         world.event_handler()
         world.key_handler()
+        world.collision_handler()
         world.draw_objects()
         world.move_balls()
 
