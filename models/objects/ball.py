@@ -9,7 +9,7 @@ class Ball(VisibleObject, MovableObject):
     def __init__(self, radius: int = 10, speed: int = 6, **kwargs):
         self.radius = radius
         self.speed = speed
-        
+
         color_name = kwargs.get('color') or 'white'
         self.color = pygame.Color(color_name)
 

@@ -11,7 +11,10 @@ class Paddle(VisibleObject):
         self.height = height
 
         self.speed = kwargs.get('speed') or 15
-        self.color = kwargs.get('color') or pygame.Color('darkorange')
+
+        color_name = kwargs.get('color') or 'darkorange'
+        self.color = pygame.Color(color_name)
+
         self.max_left = kwargs.get('max_left') or 0
         self.max_right = kwargs.get('max_right') or float('inf')
 
