@@ -29,20 +29,34 @@ class Ball(object):
             exit()
 
     def collision(self, rect):
-        if self.dx > 0:
-            delta_x = self.instance.right - rect.instance.left
-        else:
-            delta_x = rect.instance.right - self.instance.left
-        if self.dy > 0:
-            delta_y = self.instance.bottom - rect.instance.top
-        else:
-            delta_y = rect.instance.bottom - self.instance.top
+        ball = self.instance
 
-        if abs(delta_x - delta_y) < self.radius // 5:
+        # detecting direction
+        if self.dx > 0:                                 # from left to right
+            delta_x = ball.right - rect.left
+        else:                                           # from right to left
+            delta_x = rect.right - ball.left
+
+        if self.dy > 0:                                 # from bottom to top
+            delta_y = ball.bottom - rect.top
+        else:                                           # from top to bottom
+            delta_y = rect.bottom - ball.top
+
+        # detecting surface
+        if abs(delta_x - delta_y) < self.radius // 5:   # hitting a corner. 5px - rounding accuracy
             self.dx, self.dy = -self.dx, -self.dy
-        elif delta_x > delta_y:
+
+        elif delta_x > delta_y:                         # hit from top or bottom
             self.dy = -self.dy
-        elif delta_y > delta_x:
+
+            # handle direction of hit
+            if ball.centerx < rect.centerx:             # hit in left section
+                self.dx = -(abs(self.dx))
+
+            elif ball.centerx > rect.centerx:           # hit in right section
+                self.dx = abs(self.dx)
+
+        elif delta_y > delta_x:                         # hit from side
             self.dx = -self.dx
 
     def draw(self, surface):

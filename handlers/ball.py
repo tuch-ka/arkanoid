@@ -21,12 +21,12 @@ class BallHandler(object):
 
     def paddle_collision(self, paddle):
         for ball in self.balls:
-            if ball.instance.colliderect(paddle.instance) and ball.dy > 0:
-                ball.collision(rect=paddle)
+            if ball.instance.colliderect(paddle.instance):
+                ball.collision(rect=paddle.instance)
 
     def blocks_collision(self, blocks):
         for ball in self.balls:
             index = ball.instance.collidelist([block.instance for block in blocks])
             if index != -1:
                 block = blocks.pop(index)
-                ball.collision(rect=block)
+                ball.collision(rect=block.instance)
