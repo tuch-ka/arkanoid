@@ -7,7 +7,7 @@ def main_loop():
     world.init(level=1)
 
     while True:
-        if not world.blocks:
+        if world.done:
             break
 
         world.event_handler()

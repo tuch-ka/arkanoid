@@ -1,6 +1,6 @@
 import pygame
 
-from handlers import PaddleHandler, BallHandler
+from handlers import PaddleHandler, BallHandler, BlockHandler
 from world.surface import Surface
 from models.objects import *
 
@@ -18,7 +18,6 @@ class World(object):
         self.surface = Surface(width=self.width, height=self.height)
 
         self.add_paddle()
-        self.blocks = []
 
     @staticmethod
     def event_handler():
@@ -50,14 +49,13 @@ class World(object):
         BallHandler.clear()
 
     def add_blocks(self, columns: int = 10, rows: int = 4):
-        self.blocks = [
-            Block.create(world=self, col=i, row=j)
-            for i in range(columns)
-            for j in range(rows)
-        ]
+        for col in range(columns):
+            for row in range(rows):
+                new_block = Block.create(world=self, col=col, row=row)
+                BlockHandler.register(new_block)
 
     def clear_blocks(self):
-        self.blocks = []
+        BlockHandler.clear()
 
     def move_balls(self):
         BallHandler.move()
@@ -67,7 +65,7 @@ class World(object):
 
         self.surface.draw_paddle()
         self.surface.draw_balls()
-        self.surface.draw_items(self.blocks)
+        self.surface.draw_blocks()
 
         pygame.display.flip()
         self.clock.tick(self.fps)
@@ -79,3 +77,9 @@ class World(object):
         if level == 1:
             self.add_ball()
             self.add_blocks()
+
+    @property
+    def done(self) -> bool:
+        if BlockHandler.blocks:
+            return False
+        return True
