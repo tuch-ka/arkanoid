@@ -46,7 +46,8 @@ class World(object):
 
     def collision_handler(self):
         self.ball_handler.world_collision(world=self)
-        self.ball_handler.paddle_collision(self.paddle_handler.instance)
+        self.ball_handler.paddle_collision(self.paddle_handler.paddle)
+        self.ball_handler.blocks_collision(self.block_handler.blocks)
 
     def add_paddle(self, **kwargs):
         new_paddle = Paddle.create(world=self, **kwargs)

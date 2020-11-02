@@ -26,10 +26,6 @@ class Ball(VisibleObject, MovableObject):
         if self.instance.centery < self.radius:
             self.dy = -self.dy
 
-    def collision_paddle(self, paddle):
-        if self.instance.colliderect(paddle) and self.dy > 0:
-            self.dy = -self.dy
-
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.instance.center, self.radius)
 
