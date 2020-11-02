@@ -7,12 +7,17 @@ class Surface(object):
         self.color = kwargs.get('color') or 'black'
         self.img = self.convert_image(kwargs.get('img'))
 
+        self.clock = pygame.time.Clock()
         self.instance = pygame.display.set_mode((width, height))
 
     @staticmethod
     def convert_image(image: str = None):
         if image is not None:
             return pygame.image.load(image).convert()
+
+    def flip(self):
+        pygame.display.flip()
+        self.clock.tick(self.fps)
 
     def draw_background(self):
         if self.img is not None:

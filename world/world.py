@@ -15,10 +15,11 @@ class World(object):
         self.width = width
         self.height = height
 
-        self.fps = kwargs.get('fps') or 60
-
-        self.clock = pygame.time.Clock()
-        self.surface = Surface(width=self.width, height=self.height)
+        self.surface = Surface(
+            width=self.width,
+            height=self.height,
+            **kwargs,
+        )
 
         self.add_paddle()
 
@@ -79,8 +80,7 @@ class World(object):
         self.surface.draw(handler=self.ball_handler)
         self.surface.draw(handler=self.block_handler)
 
-        pygame.display.flip()
-        self.clock.tick(self.fps)
+        self.surface.flip()
 
     def init(self, level: int = 1) -> None:
         self.clear_balls()
