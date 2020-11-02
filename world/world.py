@@ -1,5 +1,6 @@
 import pygame
 
+from handlers import PaddleHandler
 from world.surface import Surface
 from models.objects import *
 
@@ -11,12 +12,13 @@ class World(object):
         self.width = width
         self.height = height
 
+        self.add_paddle()
+
         self.fps = kwargs.get('fps') or 60
 
         self.clock = pygame.time.Clock()
         self.surface = Surface(width=self.width, height=self.height)
 
-        self.paddle = None
         self.balls = []
         self.blocks = []
 
@@ -26,16 +28,18 @@ class World(object):
             if event.type == pygame.QUIT:
                 exit()
 
-    def key_handler(self):
+    @staticmethod
+    def key_handler():
         key = pygame.key.get_pressed()
 
         if key[pygame.K_LEFT]:
-            self.paddle.move_left()
+            PaddleHandler.move_left()
         if key[pygame.K_RIGHT]:
-            self.paddle.move_right()
+            PaddleHandler.move_right()
 
     def add_paddle(self, **kwargs):
-        self.paddle = Paddle.create(world=self, **kwargs)
+        new_paddle = Paddle.create(world=self, **kwargs)
+        PaddleHandler.register_paddle(new_paddle)
 
     def add_ball(self):
         self.balls.append(Ball.create(world=self))
@@ -57,20 +61,18 @@ class World(object):
         for ball in self.balls:
             ball.move()
             ball.collision_world(world=self)
-            ball.collision_paddle(paddle=self.paddle.instance)
+            ball.collision_paddle(paddle=PaddleHandler.paddle.instance)
 
     def draw_objects(self):
         self.surface.draw_background()
 
-        self.surface.draw_item(self.paddle)
+        self.surface.draw_paddle()
         self.surface.draw_items(self.balls + self.blocks)
 
         pygame.display.flip()
         self.clock.tick(self.fps)
 
     def init(self, level: int = 1) -> None:
-        if self.paddle is None:
-            self.add_paddle()
         if self.balls:
             self.clear_balls()
         if self.blocks:
