@@ -1,7 +1,7 @@
 import pygame
 
-from models import *
-from .surface import Surface
+from models.world.surface import Surface
+from models.objects import *
 
 
 class World(object):

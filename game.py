@@ -1,6 +1,6 @@
 import pygame
 
-from world.world import World
+from models.world import World
 
 
 def main_loop():
