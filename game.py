@@ -1,14 +1,15 @@
-from world import World
+from world import World, levels
 
 
 def main_loop():
     world = World()
 
-    world.init(level=1)
-    while True:
-        if world.done:
-            break
-        world.run()
+    for level in levels:
+        world.init(level=level)
+        while True:
+            if world.done:
+                break
+            world.run()
 
 
 if __name__ == '__main__':

@@ -58,11 +58,21 @@ class World(object):
         new_ball = Ball.create(world=self)
         self.ball_handler.register(new_ball)
 
-    def add_blocks(self, columns: int = 10, rows: int = 4):
-        for col in range(columns):
-            for row in range(rows):
-                new_block = Block.create(world=self, col=col, row=row)
-                self.block_handler.register(new_block)
+    # def add_blocks(self, columns: int = 10, rows: int = 4):
+    #     for col in range(columns):
+    #         for row in range(rows):
+    #             new_block = Block.create(world=self, col=col, row=row)
+    #             self.block_handler.register(new_block)
+
+    def add_blocks(self, level: list = []):
+
+        for row in range(len(level)):
+            for col in range(len(level[row])):
+                block_level = int(level[row][col])
+
+                if block_level:
+                    new_block = Block.create(world=self, col=col, row=row, level=block_level)
+                    self.block_handler.register(new_block)
 
     def move_balls(self):
         self.ball_handler.move()
@@ -76,13 +86,12 @@ class World(object):
 
         self.surface.flip()
 
-    def init(self, level: int = 1) -> None:
+    def init(self, level: list) -> None:
         self.ball_handler.clear()
         self.block_handler.clear()
 
-        if level == 1:
-            self.add_ball()
-            self.add_blocks()
+        self.add_ball()
+        self.add_blocks(level=level)
 
     @property
     def done(self) -> bool:

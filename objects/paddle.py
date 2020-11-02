@@ -10,7 +10,7 @@ class Paddle(object):
 
         self.speed = kwargs.get('speed') or 15
 
-        color_name = kwargs.get('color') or 'darkorange'
+        color_name = kwargs.get('color') or 'orange'
         self.color = pygame.Color(color_name)
 
         self.max_left = kwargs.get('max_left') or 0

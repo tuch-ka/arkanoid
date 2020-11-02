@@ -14,22 +14,12 @@ class Block(object):
         self.x = offset + (self.width + distance) * col
         self.y = offset + (self.height + distance) * row
 
-        level = kwargs.get('level')
-        if level is None or level == 1:
-            self.hp = 1
-            self.color = 'blue'
+        self.hp = 1
+        self.color = kwargs.get('color') or (randrange(30, 256), randrange(30, 256), randrange(30, 256))
 
-        elif level == 2:
-            self.hp = 2
-            self.color = 'green'
-
-        elif level == 3:
-            self.hp = 3
-            self.color = 'red'
-
-        else:
-            self.hp = 1
-            self.color = kwargs.get('color') or (randrange(30, 256), randrange(30, 256), randrange(30, 256))
+        self.level = kwargs.get('level')
+        if self.level is not None:
+            self.change_level()
 
         self.instance = None
 
@@ -55,8 +45,22 @@ class Block(object):
         pygame.draw.rect(surface, self.color, self.instance)
 
     def hit(self):
-        self.hp -= 1
-        return self.hp
+        self.level -= 1
+        self.change_level()
+        return self.level
+
+    def change_level(self):
+        if self.level == 1:
+            self.hp = 1
+            self.color = 'yellow'
+
+        elif self.level == 2:
+            self.hp = 2
+            self.color = 'green'
+
+        elif self.level == 3:
+            self.hp = 3
+            self.color = 'blue'
 
     @staticmethod
     def calculate_side(world_limit: int, offset: int, distance: int, max_value: int) -> int:
