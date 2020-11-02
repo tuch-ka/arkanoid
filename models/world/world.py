@@ -6,6 +6,8 @@ from models.objects import *
 
 class World(object):
     def __init__(self, width: int = 800, height: int = 600, **kwargs):
+        pygame.init()
+
         self.width = width
         self.height = height
 
@@ -17,6 +19,20 @@ class World(object):
         self.paddle = None
         self.balls = []
         self.blocks = []
+
+    @staticmethod
+    def event_handler():
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+
+    def key_handler(self):
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_LEFT]:
+            self.paddle.move_left()
+        if key[pygame.K_RIGHT]:
+            self.paddle.move_right()
 
     def add_paddle(self, **kwargs):
         self.paddle = Paddle.create(world=self, **kwargs)
@@ -49,7 +65,8 @@ class World(object):
         self.surface.draw_item(self.paddle)
         self.surface.draw_items(self.balls + self.blocks)
 
-        self.wait()
+        pygame.display.flip()
+        self.clock.tick(self.fps)
 
     def init(self, level: int = 1) -> None:
         if self.paddle is None:
@@ -62,7 +79,3 @@ class World(object):
         if level == 1:
             self.add_ball()
             self.add_blocks()
-
-    def wait(self):
-        pygame.display.flip()
-        self.clock.tick(self.fps)
