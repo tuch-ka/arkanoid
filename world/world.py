@@ -19,6 +19,13 @@ class World(object):
 
         self.add_paddle()
 
+    def run(self):
+        self.event_handler()
+        self.key_handler()
+        self.collision_handler()
+        self.draw_objects()
+        self.move_balls()
+
     @staticmethod
     def event_handler():
         for event in pygame.event.get():
