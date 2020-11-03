@@ -58,12 +58,6 @@ class World(object):
         new_ball = Ball.create(world=self)
         self.ball_handler.register(new_ball)
 
-    # def add_blocks(self, columns: int = 10, rows: int = 4):
-    #     for col in range(columns):
-    #         for row in range(rows):
-    #             new_block = Block.create(world=self, col=col, row=row)
-    #             self.block_handler.register(new_block)
-
     def add_blocks(self, level: list = []):
 
         for row in range(len(level)):
