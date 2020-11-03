@@ -5,10 +5,10 @@ from defaults import SurfaceConfig
 
 class Surface(object):
     def __init__(self, **kwargs) -> None:
-        self.width = kwargs.get('width') or SurfaceConfig.width
-        self.height = kwargs.get('height') or SurfaceConfig.height
+        self.width = SurfaceConfig.width
+        self.height = SurfaceConfig.height
 
-        self.fps = kwargs.get('fps') or SurfaceConfig.fps
+        self.fps = SurfaceConfig.fps
         self.color = kwargs.get('color') or SurfaceConfig.color
         self.img = self.convert_image(kwargs.get('img'))
 

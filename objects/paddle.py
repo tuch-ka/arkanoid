@@ -6,21 +6,20 @@ from defaults import PaddleConfig, WorldConfig
 class Paddle(object):
     instance = None
 
-    def __init__(self, **kwargs) -> None:
-        self.width = kwargs.get('width') or PaddleConfig.width
-        self.height = kwargs.get('height') or PaddleConfig.height
+    def __init__(self) -> None:
+        self.width = PaddleConfig.width
+        self.height = PaddleConfig.height
 
-        self.speed = kwargs.get('speed') or PaddleConfig.speed
+        self.speed = PaddleConfig.speed
 
-        color_name = kwargs.get('color') or PaddleConfig.color
-        self.color = pygame.Color(color_name)
+        self.color = pygame.Color(PaddleConfig.color)
 
-        self.max_left = kwargs.get('max_left') or PaddleConfig.max_left
-        self.max_right = kwargs.get('max_right') or PaddleConfig.max_right
+        self.max_left = PaddleConfig.max_left
+        self.max_right = PaddleConfig.max_right
 
     @classmethod
-    def create(cls, **kwargs) -> 'Paddle':
-        paddle = cls(**kwargs)
+    def create(cls) -> 'Paddle':
+        paddle = cls()
 
         paddle.instance = pygame.Rect(
             WorldConfig.width // 2 - paddle.width // 2,

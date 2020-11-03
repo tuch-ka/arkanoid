@@ -15,8 +15,8 @@ class World(object):
         self.ball_handler = BallHandler()
         self.block_handler = BlockHandler()
 
-        self.width = kwargs.get('width') or WorldConfig.width
-        self.height = kwargs.get('height') or WorldConfig.height
+        self.width = WorldConfig.width
+        self.height = WorldConfig.height
 
         self.surface = Surface(**kwargs)
 
@@ -57,8 +57,8 @@ class World(object):
         self.ball_handler.paddle_collision(self.paddle_handler.paddle)
         self.ball_handler.blocks_collision(self.block_handler.blocks)
 
-    def add_paddle(self, **kwargs) -> None:
-        new_paddle = Paddle.create(**kwargs)
+    def add_paddle(self) -> None:
+        new_paddle = Paddle.create()
         self.paddle_handler.register(new_paddle)
 
     def add_ball(self) -> None:

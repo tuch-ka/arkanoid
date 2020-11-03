@@ -7,8 +7,8 @@ from defaults import BlockConfig, WorldConfig
 
 class Block(object):
     def __init__(self, col: int, row: int, **kwargs) -> None:
-        self.offset = kwargs.get('offset') or BlockConfig.offset
-        self.distance = kwargs.get('distance') or BlockConfig.distance
+        self.offset = BlockConfig.offset
+        self.distance = BlockConfig.distance
 
         self.height = self.calculate_side(world_limit=WorldConfig.height, max_value=WorldConfig.rows)
         self.width = self.calculate_side(world_limit=WorldConfig.width, max_value=WorldConfig.columns)
