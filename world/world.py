@@ -1,3 +1,5 @@
+from typing import Optional, List
+
 import pygame
 
 from defaults import WorldConfig, Controls
@@ -10,6 +12,7 @@ class World(object):
     def __init__(self, **kwargs) -> None:
         pygame.init()
         self.pause = False
+        self._status = 'active'
 
         self.paddle_handler = PaddleHandler()
         self.ball_handler = BallHandler()
@@ -31,6 +34,19 @@ class World(object):
             self.collision_handler()
             self.draw_objects()
             self.move_balls()
+
+    @property
+    def status(self) -> Optional[str]:
+        if not self.any_block_left():
+            self._status = 'win'
+
+        if self._status == 'active':
+            return None
+
+        elif self._status == 'fail' and not self.score_handler.any_lives_left():
+            return 'gameover'
+
+        return self._status
 
     def event_handler(self) -> None:
         for event in pygame.event.get():
@@ -54,9 +70,15 @@ class World(object):
                 self.paddle_handler.move_right()
 
     def collision_handler(self) -> None:
-        self.ball_handler.world_collision()
+
+        if self.ball_handler.world_collision():
+            self.score_handler.decrease_lives()
+            self._status = 'fail'
+
+        if self.ball_handler.blocks_collision(self.block_handler.blocks):
+            self.score_handler.increase_score()
+
         self.ball_handler.paddle_collision(self.paddle_handler.paddle)
-        self.ball_handler.blocks_collision(self.block_handler.blocks)
 
     def add_paddle(self) -> None:
         new_paddle = Paddle.create()
@@ -66,7 +88,7 @@ class World(object):
         new_ball = Ball.create()
         self.ball_handler.register(new_ball)
 
-    def add_blocks(self, level: list = []) -> None:
+    def add_blocks(self, level: List[str]) -> None:
 
         for row in range(len(level)):
             for col in range(len(level[row])):
@@ -89,15 +111,13 @@ class World(object):
 
         self.surface.flip()
 
-    def init(self, level: list) -> None:
-        self.ball_handler.clear()
-        self.block_handler.clear()
-
-        self.add_ball()
+    def init_level(self, level: list) -> None:
         self.add_blocks(level=level)
 
-    @property
-    def done(self) -> bool:
-        if self.block_handler.blocks:
-            return False
-        return True
+    def init_ball(self) -> None:
+        self._status = 'active'
+        self.ball_handler.clear()
+        self.add_ball()
+
+    def any_block_left(self) -> bool:
+        return bool(len(self.block_handler.blocks))

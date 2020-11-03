@@ -22,13 +22,14 @@ class Ball(object):
         self.instance.x += self.speed * self.dx
         self.instance.y += self.speed * self.dy
 
-    def collision_world(self) -> None:
+    def collision_world(self) -> bool:
         if self.instance.centerx < self.radius or self.instance.centerx > WorldConfig.width - self.radius:
             self.dx = -self.dx
         if self.instance.centery < self.radius:
             self.dy = -self.dy
         if self.instance.bottom > WorldConfig.height:
-            exit()
+            return True
+        return False
 
     def collision(self, rect) -> None:
         ball = self.instance

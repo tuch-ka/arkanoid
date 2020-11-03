@@ -13,6 +13,12 @@ class Score(object):
         pygame.font.init()
         self.font = pygame.font.Font(None, ScoreConfig.size)
 
+    def increase_score(self):
+        self.score += 1
+
+    def decrease_lives(self):
+        self.lives -= 1
+
     @property
     def score_message(self):
         text = f'Score: {self.score}'
