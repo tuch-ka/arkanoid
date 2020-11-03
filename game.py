@@ -1,3 +1,4 @@
+from defaults import WorldConfig
 from world import World
 from world.level import generic_level
 
@@ -5,7 +6,7 @@ from world.level import generic_level
 def main_loop():
     world = World()
 
-    for difficult in range(10):
+    for difficult in range(WorldConfig.max_rows):
         world.init(level=generic_level(rows=difficult))
 
         while True:

@@ -2,17 +2,19 @@ from random import randrange
 
 import pygame
 
+from defaults import BlockConfig, WorldConfig
+
 
 class Block(object):
-    def __init__(self, col: int, row: int, world_width: int, world_height: int, **kwargs):
-        offset = kwargs.get('offset') or 10
-        distance = kwargs.get('distance') or 20
+    def __init__(self, col: int, row: int, **kwargs) -> None:
+        self.offset = kwargs.get('offset') or BlockConfig.offset
+        self.distance = kwargs.get('distance') or BlockConfig.distance
 
-        self.height = self.calculate_side(world_limit=world_height, offset=offset, distance=distance, max_value=15)
-        self.width = self.calculate_side(world_limit=world_width, offset=offset, distance=distance, max_value=10)
+        self.height = self.calculate_side(world_limit=WorldConfig.height, max_value=WorldConfig.rows)
+        self.width = self.calculate_side(world_limit=WorldConfig.width, max_value=WorldConfig.columns)
 
-        self.x = offset + (self.width + distance) * col
-        self.y = offset + (self.height + distance) * row
+        self.x = self.offset + (self.width + self.distance) * col
+        self.y = self.offset + (self.height + self.distance) * row
 
         self.hp = 1
         self.color = kwargs.get('color') or (randrange(30, 256), randrange(30, 256), randrange(30, 256))
@@ -24,14 +26,9 @@ class Block(object):
         self.instance = None
 
     @classmethod
-    def create(cls, world, *args, **kwargs) -> 'Block':
+    def create(cls, **kwargs) -> 'Block':
 
-        block = cls(
-            *args,
-            **kwargs,
-            world_width=world.width,
-            world_height=world.height,
-        )
+        block = cls(**kwargs)
 
         block.instance = pygame.Rect(
             block.x,
@@ -44,12 +41,12 @@ class Block(object):
     def draw(self, surface) -> None:
         pygame.draw.rect(surface, self.color, self.instance)
 
-    def hit(self):
+    def hit(self) -> int:
         self.level -= 1
         self.change_level()
         return self.level
 
-    def change_level(self):
+    def change_level(self) -> None:
         if self.level == 1:
             self.hp = 1
             self.color = 'yellow'
@@ -62,6 +59,5 @@ class Block(object):
             self.hp = 3
             self.color = 'blue'
 
-    @staticmethod
-    def calculate_side(world_limit: int, offset: int, distance: int, max_value: int) -> int:
-        return (world_limit - (offset + distance * max_value)) // max_value
+    def calculate_side(self, world_limit: int, max_value: int) -> int:
+        return (world_limit - (self.offset + self.distance * max_value)) // max_value

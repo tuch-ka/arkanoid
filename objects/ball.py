@@ -2,13 +2,15 @@ from random import randrange
 
 import pygame
 
+from defaults import BallConfig, WorldConfig
+
 
 class Ball(object):
-    def __init__(self, radius: int = 10, speed: int = 6, **kwargs):
-        self.radius = radius
-        self.speed = speed
+    def __init__(self, **kwargs) -> None:
+        self.radius = kwargs.get('radius') or BallConfig.radius
+        self.speed = kwargs.get('speed') or BallConfig.speed
 
-        color_name = kwargs.get('color') or 'white'
+        color_name = kwargs.get('color') or BallConfig.color
         self.color = pygame.Color(color_name)
 
         self.instance = None
@@ -16,19 +18,19 @@ class Ball(object):
         self.dx, self.dy = 1, -1
         self.rect = int(self.radius * 2 ** 0.5)
 
-    def move(self):
+    def move(self) -> None:
         self.instance.x += self.speed * self.dx
         self.instance.y += self.speed * self.dy
 
-    def collision_world(self, world):
-        if self.instance.centerx < self.radius or self.instance.centerx > world.width - self.radius:
+    def collision_world(self) -> None:
+        if self.instance.centerx < self.radius or self.instance.centerx > WorldConfig.width - self.radius:
             self.dx = -self.dx
         if self.instance.centery < self.radius:
             self.dy = -self.dy
-        if self.instance.bottom > world.height:
+        if self.instance.bottom > WorldConfig.height:
             exit()
 
-    def collision(self, rect):
+    def collision(self, rect) -> None:
         ball = self.instance
 
         # detecting direction
@@ -43,7 +45,7 @@ class Ball(object):
             delta_y = rect.bottom - ball.top
 
         # detecting surface
-        if abs(delta_x - delta_y) < self.radius // 5:   # hitting a corner. 5px - rounding accuracy
+        if abs(delta_x - delta_y) < BallConfig.corner_accuracy:   # hitting a corner
             self.dx, self.dy = -self.dx, -self.dy
 
         elif delta_x > delta_y:                         # hit from top or bottom
@@ -59,15 +61,15 @@ class Ball(object):
         elif delta_y > delta_x:                         # hit from side
             self.dx = -self.dx
 
-    def draw(self, surface):
+    def draw(self, surface) -> None:
         pygame.draw.circle(surface, self.color, self.instance.center, self.radius)
 
     @classmethod
-    def create(cls, world, *args, **kwargs):
-        ball = cls(*args, **kwargs)
+    def create(cls, **kwargs) -> 'Ball':
+        ball = cls(**kwargs)
         ball.instance = pygame.Rect(
-                randrange(ball.rect, world.width - ball.rect),
-                world.height // 2,
+                randrange(ball.rect, WorldConfig.width - ball.rect),
+                WorldConfig.height // 2,
                 ball.rect,
                 ball.rect
             )

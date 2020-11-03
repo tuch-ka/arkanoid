@@ -1,29 +1,26 @@
 import pygame
 
+from defaults import WorldConfig
 from handlers import PaddleHandler, BallHandler, BlockHandler
 from world.surface import Surface
 from objects import Paddle, Ball, Block
 
 
 class World(object):
-    def __init__(self, width: int = 800, height: int = 600, **kwargs):
+    def __init__(self, **kwargs) -> None:
         pygame.init()
         self.paddle_handler = PaddleHandler()
         self.ball_handler = BallHandler()
         self.block_handler = BlockHandler()
 
-        self.width = width
-        self.height = height
+        self.width = kwargs.get('width') or WorldConfig.width
+        self.height = kwargs.get('height') or WorldConfig.height
 
-        self.surface = Surface(
-            width=self.width,
-            height=self.height,
-            **kwargs,
-        )
+        self.surface = Surface(**kwargs)
 
         self.add_paddle()
 
-    def run(self):
+    def run(self) -> None:
         self.event_handler()
         self.key_handler()
         self.collision_handler()
@@ -31,12 +28,12 @@ class World(object):
         self.move_balls()
 
     @staticmethod
-    def event_handler():
+    def event_handler() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
 
-    def key_handler(self):
+    def key_handler(self) -> None:
         key = pygame.key.get_pressed()
 
         if key[pygame.K_LEFT]:
@@ -45,33 +42,33 @@ class World(object):
         if key[pygame.K_RIGHT]:
             self.paddle_handler.move_right()
 
-    def collision_handler(self):
-        self.ball_handler.world_collision(world=self)
+    def collision_handler(self) -> None:
+        self.ball_handler.world_collision()
         self.ball_handler.paddle_collision(self.paddle_handler.paddle)
         self.ball_handler.blocks_collision(self.block_handler.blocks)
 
-    def add_paddle(self, **kwargs):
-        new_paddle = Paddle.create(world=self, **kwargs)
+    def add_paddle(self, **kwargs) -> None:
+        new_paddle = Paddle.create(**kwargs)
         self.paddle_handler.register(new_paddle)
 
-    def add_ball(self):
-        new_ball = Ball.create(world=self)
+    def add_ball(self) -> None:
+        new_ball = Ball.create()
         self.ball_handler.register(new_ball)
 
-    def add_blocks(self, level: list = []):
+    def add_blocks(self, level: list = []) -> None:
 
         for row in range(len(level)):
             for col in range(len(level[row])):
                 block_level = int(level[row][col])
 
                 if block_level:
-                    new_block = Block.create(world=self, col=col, row=row, level=block_level)
+                    new_block = Block.create(col=col, row=row, level=block_level)
                     self.block_handler.register(new_block)
 
-    def move_balls(self):
+    def move_balls(self) -> None:
         self.ball_handler.move()
 
-    def draw_objects(self):
+    def draw_objects(self) -> None:
         self.surface.draw_background()
 
         self.surface.draw(handler=self.paddle_handler)

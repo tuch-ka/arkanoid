@@ -15,9 +15,9 @@ class BallHandler(object):
         for ball in self.balls:
             ball.draw(surface=surface)
 
-    def world_collision(self, world):
+    def world_collision(self):
         for ball in self.balls:
-            ball.collision_world(world=world)
+            ball.collision_world()
 
     def paddle_collision(self, paddle):
         for ball in self.balls:
