@@ -1,6 +1,6 @@
 import pygame
 
-from defaults import WorldConfig
+from defaults import WorldConfig, Controls
 from handlers import PaddleHandler, BallHandler, BlockHandler
 from world.surface import Surface
 from objects import Paddle, Ball, Block
@@ -9,6 +9,8 @@ from objects import Paddle, Ball, Block
 class World(object):
     def __init__(self, **kwargs) -> None:
         pygame.init()
+        self.pause = False
+
         self.paddle_handler = PaddleHandler()
         self.ball_handler = BallHandler()
         self.block_handler = BlockHandler()
@@ -23,24 +25,32 @@ class World(object):
     def run(self) -> None:
         self.event_handler()
         self.key_handler()
-        self.collision_handler()
-        self.draw_objects()
-        self.move_balls()
 
-    @staticmethod
-    def event_handler() -> None:
+        if not self.pause:
+            self.collision_handler()
+            self.draw_objects()
+            self.move_balls()
+
+    def event_handler(self) -> None:
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == Controls.pause:
+                    self.pause = not self.pause
 
     def key_handler(self) -> None:
         key = pygame.key.get_pressed()
 
-        if key[pygame.K_LEFT]:
-            self.paddle_handler.move_left()
+        if key[Controls.move_left]:
+            if not self.pause:
+                self.paddle_handler.move_left()
 
-        if key[pygame.K_RIGHT]:
-            self.paddle_handler.move_right()
+        if key[Controls.move_right]:
+            if not self.pause:
+                self.paddle_handler.move_right()
 
     def collision_handler(self) -> None:
         self.ball_handler.world_collision()
