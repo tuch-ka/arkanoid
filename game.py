@@ -1,11 +1,13 @@
-from world import World, levels
+from world import World
+from world.level import generic_level
 
 
 def main_loop():
     world = World()
 
-    for level in levels:
-        world.init(level=level)
+    for difficult in range(10):
+        world.init(level=generic_level(rows=difficult))
+
         while True:
             if world.done:
                 break
