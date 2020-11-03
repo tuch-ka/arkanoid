@@ -4,3 +4,4 @@ from .paddle import PaddleConfig
 from .surface import SurfaceConfig
 from .world import WorldConfig
 from .controls import Controls
+from .score import ScoreConfig

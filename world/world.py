@@ -1,7 +1,7 @@
 import pygame
 
 from defaults import WorldConfig, Controls
-from handlers import PaddleHandler, BallHandler, BlockHandler
+from handlers import PaddleHandler, BallHandler, BlockHandler, ScoreHandler
 from world.surface import Surface
 from objects import Paddle, Ball, Block
 
@@ -14,6 +14,7 @@ class World(object):
         self.paddle_handler = PaddleHandler()
         self.ball_handler = BallHandler()
         self.block_handler = BlockHandler()
+        self.score_handler = ScoreHandler()
 
         self.width = WorldConfig.width
         self.height = WorldConfig.height
@@ -84,6 +85,7 @@ class World(object):
         self.surface.draw(handler=self.paddle_handler)
         self.surface.draw(handler=self.ball_handler)
         self.surface.draw(handler=self.block_handler)
+        self.surface.draw(handler=self.score_handler)
 
         self.surface.flip()
 

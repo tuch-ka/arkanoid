@@ -1,6 +1,6 @@
 import pygame
 
-from defaults import PaddleConfig, WorldConfig
+from defaults import PaddleConfig, WorldConfig, ScoreConfig
 
 
 class Paddle(object):
@@ -23,7 +23,7 @@ class Paddle(object):
 
         paddle.instance = pygame.Rect(
             WorldConfig.width // 2 - paddle.width // 2,
-            WorldConfig.height - paddle.height - 10,
+            WorldConfig.height - paddle.height - (ScoreConfig.height + 10),
             paddle.width,
             paddle.height,
         )
